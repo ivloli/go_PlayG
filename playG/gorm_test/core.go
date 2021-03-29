@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"gopkg.in/guregu/null.v3"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 )
 
 type AmUser struct {
@@ -63,16 +65,37 @@ func main() {
 		fmt.Println(newUser.UserName)
 	*/
 	var users []LessUser
+	newUser := AmUser{}
+	newUser.CreateTime = null.NewTime(time.Now(), true)
+	newUser.RoleName = "IsNEW"
+	newUser.Credentials = null.NewString("HAHAHA", true)
+	newUser.UserName = "AAAAAB"
+	newUser.UserID = "aaaa123457"
+	result := db.Create(&newUser)
+	fmt.Println(result)
+	fmt.Println(newUser)
 	db.Raw("select UserName,RoleName,ID,'abcd' as Section from am_user where ID > ? order by ID desc", 80).Find(&users)
 	//fmt.Println(users)
 	for _, v := range users {
 		fmt.Println(v)
 	}
 	upUser := AmUser{
-		UserID:   "abc123456",
-		RoleName: "Hacker",
+		UserID:   "abc123456zzz111",
+		RoleName: "HackerJJJ",
 		UserName: "xiaoji",
 	}
 	feilds := []string{"UserID", "RoleName"}
-	db.Model(AmUser{}).Where("UserName=?", "oooooo").Select(feilds).Updates(upUser)
+	where := &AmUser{
+		UserName: "oooooo",
+	}
+	//db.Model(AmUser{}).Where(where).Select(feilds).Updates(&upUser)
+	updatePackInfo(db, feilds, where, &upUser)
+}
+
+func updatePackInfo(db *gorm.DB, fields []string, filter, update schema.Tabler) error {
+	res := db.Table(update.TableName()).Where(filter).Select(fields).Updates(update)
+	if res.Error != nil {
+		return res.Error
+	}
+	return nil
 }

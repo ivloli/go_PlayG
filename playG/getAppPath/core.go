@@ -11,6 +11,7 @@ import (
 func main() {
 	fmt.Println(GetAppPath())
 	fmt.Println(GetAppDirectory())
+	fmt.Println(filepath.Dir("test"))
 }
 
 func GetAppDirectory() string {
