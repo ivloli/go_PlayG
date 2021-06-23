@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+var tmap = map[int]bool{
+	1: true,
+	2: true,
+}
+
 func main() {
 	fmt.Println("vim-go")
 	mmap := make(map[string]*User, 0)
@@ -24,6 +29,16 @@ func main() {
 		fmt.Println(value)
 	}
 	fmt.Println(len(strings.Split("", ",")))
+	if !tmap[1] {
+		fmt.Println("!")
+	} else {
+		fmt.Println("?")
+	}
+	if !tmap[3] {
+		fmt.Println("!")
+	} else {
+		fmt.Println("?")
+	}
 }
 
 type User struct {

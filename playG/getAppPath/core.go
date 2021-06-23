@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -9,9 +10,12 @@ import (
 )
 
 func main() {
+	a := flag.String("info", "", "")
+	flag.Parse()
 	fmt.Println(GetAppPath())
 	fmt.Println(GetAppDirectory())
 	fmt.Println(filepath.Dir("test"))
+	fmt.Println(*a)
 }
 
 func GetAppDirectory() string {
